@@ -3,7 +3,7 @@ import { CreateCombinationDto } from './dto/create-combination.dto';
 import { UpdateCombinationDto } from './dto/update-combination.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Combination } from 'src/db/schemas/combination.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class CombinationsService {
@@ -25,14 +25,15 @@ export class CombinationsService {
     return this.combinationModel.find().exec();
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} combination`;
   }
 
   async findCurrent(row: number | null) {
     const lastRow = await this.combinationModel.count().exec();
     let combination = null;
-    let position = null,
+    let id = null,
+      position = null,
       hitFrom = null,
       starsCount = null,
       silentMove = null,
@@ -47,9 +48,11 @@ export class CombinationsService {
       starsCount = combination.starsCount;
       silentMove = combination.silentMove;
       draw = combination.draw;
+      id = combination._id;
     }
 
     return {
+      id,
       position,
       hitFrom,
       starsCount,
@@ -59,11 +62,13 @@ export class CombinationsService {
     };
   }
 
-  update(id: number, updateCombinationDto: UpdateCombinationDto) {
+  update(id: string, updateCombinationDto: UpdateCombinationDto) {
     return `This action updates a #${id} combination`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} combination`;
+  remove(id: string) {
+    Logger.log(id);
+    Logger.log(new Types.ObjectId(id));
+    return this.combinationModel.deleteOne(new Types.ObjectId(id)).exec();
   }
 }

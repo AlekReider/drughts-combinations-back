@@ -19,7 +19,7 @@ export class CombinationsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.combinationsService.findOne(+id);
+    return this.combinationsService.findOne(id);
   }
 
   @Get('currentPosition/:row')
@@ -30,11 +30,11 @@ export class CombinationsController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCombinationDto: UpdateCombinationDto) {
-    return this.combinationsService.update(+id, updateCombinationDto);
+    return this.combinationsService.update(id, updateCombinationDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.combinationsService.remove(+id);
+    return this.combinationsService.remove(id);
   }
 }
